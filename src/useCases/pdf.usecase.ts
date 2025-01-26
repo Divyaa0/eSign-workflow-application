@@ -1,15 +1,19 @@
+import path from "path";
 import { PDF } from "src/entities/pdf.entity";
-import { PDFRepository } from "./repositories/pdf.repository";
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
 export class PDFUseCase
 {
-    constructor(private readonly pdfRepository: PDFRepository) {}
 
-    async uploadPDFUseCase()
+    async uploadPDFUseCase(file)
     {
-     console.log("🚀 ~ file: --usecase")
-    //  const answer = await this.pdfRepository.saveFile(file)   
-    // const answer = await this.pdfRepository.saveFile()   
+    console.log("🚀 ~ file:", file)
+    const fileName = file.filename;
+    const uniqueId = fileName.split('-')[0]; // Extract unique ID from filename
+    console.log("🚀 ~ uniqueId:", uniqueId)
+    return { message : `Congratulations! your file ${file.originalName} has been uploaded successfully` ,pdfId : uniqueId }; // Return unique ID to the user
 
-    //  console.log("🚀 ~ answer:", answer)
     }
+
 }

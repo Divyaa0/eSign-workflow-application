@@ -1,8 +1,7 @@
 import { Controller, Post, Body, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PDFUseCase } from 'src/useCases/pdf.usecase';
-import { join } from 'path';
-import { ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
+import { ParseFilePipe,  FileTypeValidator } from '@nestjs/common';
 import { diskStorage } from 'multer';
 @Controller()
 export class PDFController {
@@ -27,6 +26,6 @@ export class PDFController {
         ]
     }),
     ) file: Express.Multer.File, @Body() body: any) {
-        return file
+        return this.PDFUseCase.uploadPDFUseCase(file)
     }
 }

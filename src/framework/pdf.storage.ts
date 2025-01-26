@@ -1,7 +1,6 @@
-import { PDFRepository } from "src/useCases/repositories/pdf.repository";
 import { BadRequestException, Injectable } from '@nestjs/common';
 
-export class PDFStorage implements PDFRepository {
+export class PDFStorage {
     // async saveFile(file: Express.Multer.File) {
     //     console.log("🚀 ~ PDFStorage ~ saveFile ~ file:", file)
     //     if (!file) {
