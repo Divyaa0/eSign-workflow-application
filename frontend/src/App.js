@@ -7,12 +7,10 @@ const MyOpensignComponent = () => {
     <Opensign
     onLoad={() => console.log("success")}
     onLoadError={(error) => console.log(error)}
-    templateId= "iHyXjGZEL8"
+    templateId= "mlYybp3x4X"
   />
   );
 };
-console.log("🚀 ~ MyOpensignComponent ~ MyOpensignComponent:", MyOpensignComponent)
-
 
 function App() {
   return (
