@@ -36,7 +36,7 @@ Additionally, the platform features a frontend that provides a user-friendly int
 $ npm install
 ```
 
-## Compile and run the Frontend
+## Compile and run the Backend
 
 ```bash
 # watch mode
@@ -44,7 +44,7 @@ $ npm run start:dev
 
 ```
 
-## Compile and run the Backend
+## Compile and run the Frontend
 
 ```bash
 # watch mode
