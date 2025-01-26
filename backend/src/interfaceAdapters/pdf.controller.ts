@@ -6,7 +6,8 @@ import { diskStorage } from 'multer';
 @Controller()
 export class PDFController {
     constructor(private PDFUseCase: PDFUseCase) { }
-
+    
+    // handle PDF file upload
     @Post('upload')
     @UseInterceptors(FileInterceptor('file', {     
         storage: diskStorage({
@@ -25,7 +26,7 @@ export class PDFController {
             new FileTypeValidator({ fileType: 'pdf' }),
         ]
     }),
-    ) file: Express.Multer.File, @Body() body: any) {
+    ) file: Express.Multer.File) {
         return this.PDFUseCase.uploadPDFUseCase(file)
     }
 }
