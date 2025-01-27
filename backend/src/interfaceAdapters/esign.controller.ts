@@ -16,4 +16,10 @@ export class ESignController {
         return this.ESignUsecase.getTemplateById(templateId)
     }
 
+    // create document from template id
+    async createDocument(@Param('templateId') templateId: string)
+    {
+        return this.ESignUsecase.createDocument(templateId);
+    }
+
 }

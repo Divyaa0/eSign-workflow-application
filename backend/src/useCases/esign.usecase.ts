@@ -50,4 +50,20 @@ export class ESignUsecase {
 
     }
   }
+
+  // create document from templateId
+  async createDocument(templateId:string)
+  {
+    const  {config}= await this.IESignConfig.createDocumentConfig(templateId); 
+    try {
+      const createTemplate = await firstValueFrom(this.httpService.request(config));
+      return createTemplate.data
+    }
+    catch (e) {
+      console.log("🚀 ~ e:", e)
+      return { message : 'Failed to create Template ',  error : e.data}
+
+
+    }
+  }
 }

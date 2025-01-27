@@ -6,8 +6,8 @@ import { PDFStorage } from './framework/pdf.storage';
 import { HttpModule } from '@nestjs/axios';
 import { ESignController } from './interfaceAdapters/esign.controller';
 import { ESignUsecase } from './useCases/esign.usecase';
-import { ESignConfig } from './framework/openSignLabs';
 import { ConfigModule } from '@nestjs/config';
+import { OenSignLabConfig } from './framework/openSignLabs';
 @Module({
   imports: [
     HttpModule,
@@ -24,7 +24,7 @@ import { ConfigModule } from '@nestjs/config';
   },
   {
     provide:'IESignConfig',
-    useClass:ESignConfig
+    useClass:OenSignLabConfig
   },
   
 ],
