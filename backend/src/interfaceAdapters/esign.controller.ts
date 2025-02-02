@@ -1,4 +1,5 @@
-import { Controller, Post, Body,Get,Param } from '@nestjs/common';
+import { Controller, Post, Body,Get,Param, Request } from '@nestjs/common';
+import { request } from 'http';
 import { ESignUsecase } from 'src/useCases/esign.usecase';
 @Controller()
 export class ESignController {
@@ -11,15 +12,28 @@ export class ESignController {
     }
     
     //  fetch a template by its ID
-    @Get(':templateId')
+    @Get('getTemplate/:templateId')
     async getTemplateById(@Param('templateId') templateId: string) {
         return this.ESignUsecase.getTemplateById(templateId)
     }
 
     // create document from template id
-    async createDocument(@Param('templateId') templateId: string)
+    @Get('createDocument/:templateId')
+    async createDocumentFromTemplate(@Param('templateId') templateId: string)
     {
-        return this.ESignUsecase.createDocument(templateId);
+        return this.ESignUsecase.createDocumentFromTemplate(templateId);
     }
 
+    @Post('/webhook')
+    async GetEventInfo(@Body () body)
+    {
+        console.log("🚀 ~ ESignController ~ GetEventInfo:")
+        return this.ESignUsecase.getEventInfo(body);
+    }
+
+    @Post('createDocument')
+    async createDocument(@Body() body)
+    {
+        return this.ESignUsecase.createDocument(body);
+    }
 }

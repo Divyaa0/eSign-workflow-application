@@ -52,13 +52,15 @@ export class ESignUsecase {
   }
 
   // create document from templateId
-  async createDocument(templateId:string)
+  async createDocumentFromTemplate(templateId:string)
   {
-    const  {config}= await this.IESignConfig.createDocumentConfig(templateId); 
+    const  {configDoc}= await this.IESignConfig.createDocumentFromTemplateConfig(templateId); 
     try {
-      const createTemplate = await firstValueFrom(this.httpService.request(config));
+      const createTemplate = await firstValueFrom(this.httpService.request(configDoc));
       return createTemplate.data
     }
+
+
     catch (e) {
       console.log("🚀 ~ e:", e)
       return { message : 'Failed to create Template ',  error : e.data}
@@ -66,4 +68,79 @@ export class ESignUsecase {
 
     }
   }
+
+  async getEventInfo(request)
+  {
+  console.log("🚀 ~ ESignUsecase ~ request:", request)
+  // const role2signed = request.signer.name;
+  // console.log("🚀 ~ ESignUsecase ~ role2signed:", role2signed)
+  // if(request.event == 'signed' && role2signed == 'Divyaa0' )
+  // {
+  //   console.log("trigger another mail .....")
+  //   // this.addRole3ToWorkflow(request.objectId , 'divyasai19@svvv.edu.in')
+  // }
+  }
+
+  async createDocument(body)
+  {
+    const {pdfId }=body;
+    const base64File = await this.IPDFRepository.getFile(pdfId);
+
+    const {config} = await this.IESignConfig.createDocumentConfig( base64File , body);
+
+    try {
+      const createDocument = await firstValueFrom(this.httpService.request(config));
+      return createDocument.data
+    }
+    catch (e) {
+      console.log("🚀 ~ e:", e)
+      return { message : 'Failed to  createDocument ',  error : e.data}
+    }
+    
+  }
+
+  async  addRole3ToWorkflow(documentId, role3Email) {
+    console.log("🚀 ~ ESignUsecase ~ addRole3ToWorkflow ~ role3Email:", role3Email)
+    console.log("🚀 ~ ESignUsecase ~ addRole3ToWorkflow ~ documentId:", documentId)
+
+    const data_ = JSON.stringify({ 
+      title:'eSignWorkflow',
+      signers: [
+        {
+          role: 'role3',
+          email: role3Email,
+          name: 'Role 3 User',
+          widgets: [
+            {
+              type: 'signature',
+              page: 1,
+              x: 300,
+              y: 100,
+              w: 38,
+              h: 46,
+            },
+
+          ],
+        },
+      ]
+    })
+
+    const config = {
+      method: 'put',
+      url: `https://sandbox.opensignlabs.com/api/v1/document/${documentId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'x-api-token': 'test.3ZxKSzbAxB17jcgpV9lbjF',
+      },
+      data: data_,
+      maxBodyLength: Infinity,
+    };
+
+    
+    const addSigner = await firstValueFrom(this.httpService.request(config));
+    console.log("🚀 ~ ESignUsecase ~ addRole3ToWorkflow ~ addSigner:", addSigner)
+
+  }
+  
 }

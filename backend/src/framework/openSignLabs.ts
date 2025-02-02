@@ -20,10 +20,10 @@ export class OenSignLabConfig implements IESignConfig {
       title: 'eSignWorkflow',
       signers: [
         {
-          role: 'developer', // Add your specific role
+          role: 'role1', 
           email: 'divyasoni1515@gmail.com',
-          name: 'Divya Soni',
-          phone: '8959304444',
+          name: 'role1',
+          phone: '',
           widgets: [
             {
               type: 'signature',
@@ -42,7 +42,7 @@ export class OenSignLabConfig implements IESignConfig {
       enableTour: true,
       redirect_url: '',
       email_sender_name: 'opensign™',
-      allow_modifications: false,
+      allow_modifications: true,
     });
     const url = this.ConfigService.get('BASE_OPENSIGN_URL')
     const apiToken = this.ConfigService.get('API_TOKEN')
@@ -82,14 +82,14 @@ export class OenSignLabConfig implements IESignConfig {
   }
 
   // create document from templateId config
-  async createDocumentConfig(templateId: string) {
+  async createDocumentFromTemplateConfig(templateId: string) {
 
     const templateData = JSON.stringify({
       "signers": [
         {
-          "role": "developer",
+          "role": "role1",
           "email": "divyasoni1515@gmail.com",
-          "name": "Divya Soni",
+          "name": "role1",
           "phone": "8959304444"
         }
       ],
@@ -101,7 +101,7 @@ export class OenSignLabConfig implements IESignConfig {
       "enableOTP": false,
       "enableTour": true,
       "email_sender_name": 'opensign™',
-      "allow_modifications": false,
+      "allow_modifications": true,
     });
 
     const url = this.ConfigService.get('BASE_OPENSIGN_URL')
@@ -119,11 +119,88 @@ export class OenSignLabConfig implements IESignConfig {
       data: templateData,
       maxBodyLength: Infinity,
     };
-    console.log("🚀 ~ OenSignLabConfig ~ createDocumentConfig ~ configDoc:", configDoc)
-    return configDoc
+    return {configDoc}
 
 
   }
 
+ async createDocumentConfig(base64File , body)
+ {
 
+
+  const {  title , signers } = body;
+
+  
+  // const templateData = JSON.stringify({
+  //   file: base64File, // Base64-encoded file
+  //   title: 'eSignWorkflow',
+  //   signers: [
+  //     {
+  //       role: 'role1', 
+  //       email: 'divyasoni1515@gmail.com',
+  //       name: 'role1',
+  //       phone: '',
+  //       widgets: [
+  //         {
+  //           type: 'signature',
+  //           page: 1,
+  //           x: 244,
+  //           y: 10,
+  //           w: 38,
+  //           h: 46,
+  //         },
+  //       ],
+  //     },
+
+  //   ],
+  //   sendInOrder: true,
+  //   enableOTP: false,
+  //   enableTour: true,
+  //   redirect_url: '',
+  //   email_sender_name: 'opensign™',
+  //   allow_modifications: true,
+  // });
+  const templateData = JSON.stringify({
+    file: base64File, // Base64-encoded file
+    title: title || 'eSignWorkflow',
+    signers: signers.map((signer, index) => ({
+      role: signer.role,
+      email: signer.email,
+      name: signer.name,
+      phone: signer.phone || '',
+      widgets: [
+        {
+          type: signer.type || 'signature', 
+          page: 1, 
+          x: 244 + index * 50, 
+          y: 10,
+          w: 38,
+          h: 46,
+        },
+      ],
+    })),
+    sendInOrder: true,
+    enableOTP: false,
+    enableTour: true,
+    redirect_url: '',
+    email_sender_name: 'opensign™',
+    allow_modifications: true,
+  });
+  const url = this.ConfigService.get('BASE_OPENSIGN_URL')
+  const apiToken = this.ConfigService.get('API_TOKEN')
+
+  const config = {
+    method: 'post',
+    url: `${url}createdocument`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'x-api-token': apiToken,
+    },
+    data: templateData,
+    maxBodyLength: Infinity,
+  };
+
+  return { config }
+ }
 }
