@@ -130,36 +130,6 @@ export class OenSignLabConfig implements IESignConfig {
 
   const {  title , signers } = body;
 
-  
-  // const templateData = JSON.stringify({
-  //   file: base64File, // Base64-encoded file
-  //   title: 'eSignWorkflow',
-  //   signers: [
-  //     {
-  //       role: 'role1', 
-  //       email: 'divyasoni1515@gmail.com',
-  //       name: 'role1',
-  //       phone: '',
-  //       widgets: [
-  //         {
-  //           type: 'signature',
-  //           page: 1,
-  //           x: 244,
-  //           y: 10,
-  //           w: 38,
-  //           h: 46,
-  //         },
-  //       ],
-  //     },
-
-  //   ],
-  //   sendInOrder: true,
-  //   enableOTP: false,
-  //   enableTour: true,
-  //   redirect_url: '',
-  //   email_sender_name: 'opensign™',
-  //   allow_modifications: true,
-  // });
   const templateData = JSON.stringify({
     file: base64File, // Base64-encoded file
     title: title || 'eSignWorkflow',
@@ -186,6 +156,7 @@ export class OenSignLabConfig implements IESignConfig {
     email_sender_name: 'opensign™',
     allow_modifications: true,
   });
+  
   const url = this.ConfigService.get('BASE_OPENSIGN_URL')
   const apiToken = this.ConfigService.get('API_TOKEN')
 

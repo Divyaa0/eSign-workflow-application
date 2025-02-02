@@ -68,19 +68,13 @@ export class ESignUsecase {
 
     }
   }
-
+  // get log of all events
   async getEventInfo(request)
   {
   console.log("🚀 ~ ESignUsecase ~ request:", request)
-  // const role2signed = request.signer.name;
-  // console.log("🚀 ~ ESignUsecase ~ role2signed:", role2signed)
-  // if(request.event == 'signed' && role2signed == 'Divyaa0' )
-  // {
-  //   console.log("trigger another mail .....")
-  //   // this.addRole3ToWorkflow(request.objectId , 'divyasai19@svvv.edu.in')
-  // }
   }
-
+  
+  // create document
   async createDocument(body)
   {
     const {pdfId }=body;
@@ -99,48 +93,6 @@ export class ESignUsecase {
     
   }
 
-  async  addRole3ToWorkflow(documentId, role3Email) {
-    console.log("🚀 ~ ESignUsecase ~ addRole3ToWorkflow ~ role3Email:", role3Email)
-    console.log("🚀 ~ ESignUsecase ~ addRole3ToWorkflow ~ documentId:", documentId)
 
-    const data_ = JSON.stringify({ 
-      title:'eSignWorkflow',
-      signers: [
-        {
-          role: 'role3',
-          email: role3Email,
-          name: 'Role 3 User',
-          widgets: [
-            {
-              type: 'signature',
-              page: 1,
-              x: 300,
-              y: 100,
-              w: 38,
-              h: 46,
-            },
-
-          ],
-        },
-      ]
-    })
-
-    const config = {
-      method: 'put',
-      url: `https://sandbox.opensignlabs.com/api/v1/document/${documentId}`,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'x-api-token': 'test.3ZxKSzbAxB17jcgpV9lbjF',
-      },
-      data: data_,
-      maxBodyLength: Infinity,
-    };
-
-    
-    const addSigner = await firstValueFrom(this.httpService.request(config));
-    console.log("🚀 ~ ESignUsecase ~ addRole3ToWorkflow ~ addSigner:", addSigner)
-
-  }
   
 }

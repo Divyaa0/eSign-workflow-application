@@ -23,14 +23,14 @@ export class ESignController {
     {
         return this.ESignUsecase.createDocumentFromTemplate(templateId);
     }
-
+    //  webhook to get all events
     @Post('/webhook')
     async GetEventInfo(@Body () body)
     {
         console.log("🚀 ~ ESignController ~ GetEventInfo:")
         return this.ESignUsecase.getEventInfo(body);
     }
-
+    //  create document
     @Post('createDocument')
     async createDocument(@Body() body)
     {
